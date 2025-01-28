@@ -1,0 +1,51 @@
+name: Despliegue en EC2
+
+on:
+  push:
+    branches:
+      - dev  # Solo cuando se haga un push a la rama 'dev'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Validar conexión SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: echo "Conexión exitosa a la instancia EC2"
+
+      - name: Copiar archivos al servidor
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "."
+          target: "projects/InvestMedic"
+
+      - name: Ejecutar comandos remotos
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            # Backend
+            # Instalar Node.js y npm
+            curl -fsSL https://rpm.nodesource.com/setup_18.x | sudo bash -
+            sudo yum install -y nodejs
+            # Instalar PM2
+            sudo npm install -g pm2
+            cd projects/InvestMedic
+            npm install
+            # pm2 restart InvestMedicAPI
