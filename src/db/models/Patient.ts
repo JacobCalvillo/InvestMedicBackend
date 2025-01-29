@@ -26,87 +26,99 @@ Patient.init(
         },
         weight: {
             type:DataTypes.DECIMAL(10,2),
-            allowNull: false,
+            allowNull: true,
         },
         height: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
         },
-        gender_id: {
-            type: DataTypes.INTEGER,
+        gender: {
+            type: DataTypes.STRING(10),
             allowNull: false,
         },
         marital_status_id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
         },
         address: {
             type: DataTypes.STRING(100),
-            allowNull: false,
+            allowNull: true,
         },
         occupation: {
             type: DataTypes.STRING(50),
-            allowNull: false,
+            allowNull: true,
         },
         emergency_contact_name: {
             type: DataTypes.STRING(50),
-            allowNull: false,
+            allowNull: true,
         },
         emergency_contact_last_name: {
             type: DataTypes.STRING(50),
-            allowNull: false,
+            allowNull: true,
         },
         emergency_contact_relationship: {
             type: DataTypes.STRING(50),
-            allowNull: false,
+            allowNull: true,
         },
         emergency_contact_phone: {
             type: DataTypes.STRING(20),
-            allowNull: false,
+            allowNull: true,
         },
         insurance_id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
+        },
+        insurance_policy_number: {
+            type: DataTypes.STRING(50),
+            allowNull: true,
         },
         allergies: {
             type: DataTypes.TEXT,
-            allowNull: false,
+            allowNull: true,
         },
         current_medication: {
             type: DataTypes.TEXT,
-            allowNull: false,
+            allowNull: true,
         },
         family_medical_history: {
             type: DataTypes.TEXT,
-            allowNull: false,
+            allowNull: true,
         },
         past_medical_history: {
             type: DataTypes.TEXT,
-            allowNull: false,
+            allowNull: true,
         },
         past_history : {
             type: DataTypes.TEXT,
-            allowNull: false,
+            allowNull: true,
         },
-        identification_id: {
+        identificationType_id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
         },
-        treatments:{
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
+        identification_number: {
+            type: DataTypes.STRING(50),
+            allowNull: true,
+        },
+        identificaction_document_url: {
+            type: DataTypes.TEXT,
+            allowNull: true,
         },
         gynecobstetrics_id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
+        },
+        privacy_consent: {
+            type: DataTypes.BOOLEAN,
+            allowNull: true
         },
         consent_id: {
             type: DataTypes.INTEGER,            
-            allowNull: false,
+            allowNull: true,
         },
         user_id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
         } 
     },
     {

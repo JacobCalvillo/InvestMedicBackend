@@ -2,6 +2,7 @@ import { DataTypes, Model } from "sequelize";
 import db  from "../config";
 import PaymentMethod from "./PaymentMethod";
 import Invoice from "./Invoice";
+import Patient from "./Patient";
 
 class Payment extends Model {}
 
@@ -28,6 +29,14 @@ Payment.init(
                 key: "id"
             }
         },
+        patient_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: Patient,
+                key: "id"
+            }
+        },  
         invoice_id: {
             type: DataTypes.INTEGER,
             allowNull: false,

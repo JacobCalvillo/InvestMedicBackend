@@ -8,3 +8,11 @@ Consult.belongsTo(Appointment, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE"
 })
+
+Appointment.hasOne(Consult, {
+    foreignKey: {
+        name: "appointment_id"
+    },
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
+})

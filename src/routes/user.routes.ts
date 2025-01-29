@@ -4,12 +4,14 @@ import { getUsers, getUserForId, userUpdate, userDelete } from "../controllers/u
 
 const router = express.Router();
 
+//GET
 router.get("/users", getUsers);
 router.get("/user/:id", getUserForId);
 
-
+//PUT
 router.put("/user", userUpdate);
 
+//DELETE
 router.delete("/user/:id", userDelete);
 
 

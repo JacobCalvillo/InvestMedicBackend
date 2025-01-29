@@ -1,6 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import db  from "../config";
 import MedicalPractitioner from "./MedicalPractitioner";
+import MedicalPractitionerSpecialty from "./MedicalPractitionerSpecialty";
 
 class Specialty extends Model {}
 
@@ -24,8 +25,6 @@ Specialty.init(
 )
 
 
-Specialty.belongsToMany(MedicalPractitioner, {
-    through: "Medical_Practitioner_Specialty"
-})
+
 
 export default Specialty;
