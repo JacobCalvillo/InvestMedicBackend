@@ -1,6 +1,6 @@
 import { handleHttp } from "../utils/error.handle";
 import { Response, Request} from "express";
-import { getAllUsers, updateUser, getUserById, deleteUser } from "../services/userService";
+import { getAllUsers, updateUser, getUserById, deleteUser, getUserByEmail } from "../services/userService";
 
 const getUsers = async (_req: Request, res: Response ) => {
     try {
@@ -63,5 +63,19 @@ const userDelete = async ({ params }: Request, res : Response) => {
         handleHttp(res, 'ERROR_DELETE_USER');
     }
 }
+
+export const getUserByEmailController = async (req: Request, res: Response) => {
+    try {
+        const email = req.params.email;
+        const user = await getUserByEmail(email);
+        if (user !== null) {
+            res.status(200).send(user);
+        } else {
+            res.status(400).send({ message: 'User not found' });
+        }
+    } catch (error) {
+        handleHttp(res, 'ERROR_GET_USER');
+    }
+}   
 
 export { getUsers, userUpdate, getUserForId , userDelete };

@@ -1,25 +1,20 @@
 import Patient from "../db/models/Patient";
 import User from "../db/models/User";
+import { IPatientCreationAttributes } from "../utils/interfaces/IPaciente";
 
-const createPatient = async (data: any) => {
+const createPatient = async (data: IPatientCreationAttributes) => {
     try {
-    const { userId, identificationDocument,...patientData } = data;    
-
-    const newPatient = await Patient.create({
-        data: {
-          ...patientData,
-          user: {
-            connect: { id: userId },
-          },
-        },
-    });
-  
-      return newPatient;
+        console.log(data);
+        
+        const newPatient = await Patient.create(data);
+        console.log(newPatient);
+        return newPatient;
     } catch (error) {
-      console.error("Error al crear el paciente:", error);
-      return null;
+        console.error("Error al crear el paciente:", error);
+        return null;
     }
-  };
+};
+
 
 const getPatient = async (id: number) => {
     try {

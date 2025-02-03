@@ -21,7 +21,7 @@ const registerNewUser = async (user: User) => {
                 phone: user.phone,
                 password: hashedPassword,
             });
-
+            console.log(newUser);
             return newUser;
         } else {
             return null; 

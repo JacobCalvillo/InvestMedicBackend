@@ -29,7 +29,7 @@
   "version": "1.0.0",
   "description": "API project",
   "scripts": {
-    "start": "ts-node index.ts",
+    "start": "node dist/index.js",
     "dev": "nodemon index.ts",
     "build": "tsc",
     "serve": "node dist/index.js"

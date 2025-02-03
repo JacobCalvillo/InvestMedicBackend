@@ -1,10 +1,16 @@
-import Identification from "../db/models/Identification";
+import IIdentification from "../utils/interfaces/Iidentification";
+import  IdentificationUser from "../db/models/IdentificationUser";
 
-export const createIdentification = async (identificationData: Identification) => {
+export const createIdentification = async (identificationData: IIdentification) => {
     try {
-        const newIdentification = await Identification.create({
-            data: identificationData
-        })
+        console.log(identificationData);
+        const { identificationTypeId } = identificationData;
+        
+        const newIdentification = await IdentificationUser.create({
+            ...identificationData,
+            identificationTypeId: Number(identificationTypeId)
+        });
+         
         return newIdentification;
     } catch (error) {
         console.error("Error al crear la identificación:", error);
@@ -14,7 +20,7 @@ export const createIdentification = async (identificationData: Identification) =
 
 export const getIdentifications = async () => {
     try {
-        const identifications = await Identification.findAll();
+        const identifications = await IdentificationUser.findAll();
         return identifications;
     } catch (error) {
         console.error("Error al obtener la identificación:", error);
@@ -24,7 +30,7 @@ export const getIdentifications = async () => {
 
 export const getIdentificationById = async (id: number) => {
     try {
-        const identification = await Identification.findOne({ where: { id: id } });
+        const identification = await IdentificationUser.findOne({ where: { id: id } });
         return identification;
     } catch (error) {
         console.error("Error al obtener la identificación:", error);
@@ -32,9 +38,9 @@ export const getIdentificationById = async (id: number) => {
     }
 }
 
-export const updateIdentification = async (id: number, identificationData: any) => {
+export const updateIdentification = async (id: number, identificationData: IIdentification) => {
     try {
-        const updatedIdentification = await Identification.update(identificationData, { where: { id: id } });
+        const updatedIdentification = await IdentificationUser.update(identificationData, { where: { id: id } });
         return updatedIdentification;
     } catch (error) {
         console.error("Error al actualizar la identificación:", error);
@@ -44,7 +50,7 @@ export const updateIdentification = async (id: number, identificationData: any) 
 
 export const deleteIdentification = async (id: number) => {
     try {
-        const deletedIdentification = await Identification.destroy({ where: { id: id } });
+        const deletedIdentification = await IdentificationUser.destroy({ where: { id: id } });
         return deletedIdentification;
     } catch (error) {
         console.error("Error al eliminar la identificación:", error);

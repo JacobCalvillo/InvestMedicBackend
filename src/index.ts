@@ -9,6 +9,8 @@ import { router as appointmentRoutes } from './routes/appointment.routes';
 import { router as clientRoutes } from './routes/client.routes';
 import { router as serviceRoutes } from './routes/services.routes';
 import { router as paymentRoutes } from './routes/payment.routes';
+import { router as identificationRoutes } from './routes/identification.routes';
+import { router as identificationTypeRoutes } from './routes/identificationTypes.routes';
 import cors from 'cors';
 
 const app = express();
@@ -33,7 +35,9 @@ app.use('/api',
         // doctorRoutes, 
         clientRoutes, 
         serviceRoutes,
-        paymentRoutes
+        paymentRoutes,
+        identificationRoutes,
+        identificationTypeRoutes
     );
 
 
