@@ -13,9 +13,6 @@ jobs:
       - name: Checkout código (Opcional, si necesitas copiar archivos a EC2)
         uses: actions/checkout@v4
 
-      - name: Construir imagen Docker
-        run: docker build -t ${{ secrets.DOCKER_REPO }}:latest .
-
       - name: Iniciar sesión en Docker Hub (o ECR)
         uses: docker/login-action@v2
         with:
