@@ -21,10 +21,6 @@ Service.init(
         image_url: {
             type: DataTypes.STRING(2083),
             allowNull: true
-        },
-        category_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false
         }
     },
     {

@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import db from "../config";
+import User from "./User";
 
 class Notification extends Model { }
 
@@ -7,7 +8,11 @@ Notification.init(
     {
         user_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: User,
+                key: "id"
+            }
         },
         message: {
             type: DataTypes.TEXT,

@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import db  from "../config";
+import User from "./User";
 
 const AuditLog = db.define(
     "AuditLog",
@@ -14,7 +15,11 @@ const AuditLog = db.define(
         },
         user_id: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: User,
+                key: "id"
+            }
         },
         timestamp: {
             type: DataTypes.DATE,

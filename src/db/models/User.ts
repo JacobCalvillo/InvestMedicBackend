@@ -48,14 +48,6 @@ User.init(
 )
 
 
-User.hasOne(Patient, {
-    foreignKey: {
-        name: 'user_id',
-    },
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
-})
-
 User.hasOne(MedicalPractitioner, {
     foreignKey: {
         name: 'user_id',

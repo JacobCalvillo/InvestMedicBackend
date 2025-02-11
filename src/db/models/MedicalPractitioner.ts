@@ -1,5 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import db from "../config";
+import Specialty from "./Specialty";
+import MedicalPractitionerSpecialty from "./MedicalPractitionerSpecialty";
 
 class MedicalPractitioner extends Model {}
 
@@ -29,7 +31,10 @@ MedicalPractitioner.init(
     }
 )
 
-
+MedicalPractitioner.belongsToMany(Specialty, {
+    through: MedicalPractitionerSpecialty,
+    foreignKey: 'medical_practitioner_id'
+})
 
 
 export default MedicalPractitioner;
