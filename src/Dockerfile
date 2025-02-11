@@ -1,10 +1,13 @@
 # syntax=docker/dockerfile:1
 ARG NODE_VERSION=20.14.0
 
-FROM node:${NODE_VERSION}-alpine as base
+FROM node:20-alpine3.20 as base
 
 # Set working directory for all build stages.
 WORKDIR /usr/src/app
+
+# Copy the .env file to the container
+COPY .env .env
 
 FROM base as deps
 
@@ -17,8 +20,6 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 # Create a stage for building the application.
 FROM deps as build
 
-# Download additional development dependencies before building, as some projects require
-# "devDependencies" to be installed to build. If you don't need this, remove this step.
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=cache,target=/root/.npm \
@@ -26,6 +27,7 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 
 # Copy the rest of the source files into the image.
 COPY . .
+
 # Run the build script.
 RUN npm run build
 
@@ -39,9 +41,6 @@ ENV NODE_ENV production
 
 # Run the application as a non-root user.
 USER node
-
-# Copy package.json so that package manager commands can be used.
-COPY package.json .
 
 # Copy the production dependencies from the deps stage and also
 # the built application from the build stage into the image.
