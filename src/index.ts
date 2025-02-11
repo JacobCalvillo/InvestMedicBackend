@@ -50,6 +50,6 @@ app.get('/ping', (_req, res) => {
 });     
 
 
-app.listen(process.env.PORT || PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);
 })
