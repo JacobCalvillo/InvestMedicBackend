@@ -34,14 +34,11 @@ jobs:
             docker stop ${{ secrets.CONTAINER_NAME }} || true
             docker rm ${{ secrets.CONTAINER_NAME }} || true
 
-            # Iniciar sesion en docker
-            docker login
-
             # Pull de la nueva imagen desde Docker Hub
-            docker pull ${{ secrets.DOCKER_REPO }}:v1.1
+            docker pull ${{ secrets.DOCKER_REPO }}:v1.2
 
             # Ejecutar el nuevo contenedor
-            docker run -d -p 80:80 --name ${{ secrets.CONTAINER_NAME }} ${{ secrets.DOCKER_REPO }}:latest
+            docker run -d -p 5000:8080 --name ${{ secrets.CONTAINER_NAME }} ${{ secrets.DOCKER_REPO }}:v1.2
             
             # Opcional: Comandos adicionales después de iniciar el contenedor
             # Por ejemplo, verificar el estado del contenedor:
