@@ -3,7 +3,7 @@ name: Despliegue en EC2 con Docker
 on:
   push:
     branches:
-      - main  # Solo cuando se haga un push a la rama 'dev'
+      - main  # Solo cuando se haga un push a la rama 'main'
 
 jobs:
   deploy:
@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Construir imagen Docker
-        run: docker build -t ${{ secrets.DOCKER_REPO }}:latest .
+        run: docker build -f ./src/Dockerfile -t ${{ secrets.DOCKER_REPO }}:latest .
 
       - name: Iniciar sesión en Docker Hub (o ECR)
         uses: docker/login-action@v2
