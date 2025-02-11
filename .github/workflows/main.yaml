@@ -3,7 +3,7 @@ name: Despliegue en EC2 con Docker
 on:
   push:
     branches:
-      - main
+      - main  # Solo cuando se haga un push a la rama 'dev'
 
 jobs:
   deploy:
@@ -12,7 +12,10 @@ jobs:
     steps:
       - name: Checkout código (Opcional, si necesitas copiar archivos a EC2)
         uses: actions/checkout@v4
-        
+
+      - name: Construir imagen Docker
+        run: docker build -t ${{ secrets.DOCKER_REPO }}:latest .
+
       - name: Iniciar sesión en Docker Hub (o ECR)
         uses: docker/login-action@v2
         with:
@@ -38,10 +41,8 @@ jobs:
             docker pull ${{ secrets.DOCKER_REPO }}:v1.1
 
             # Ejecutar el nuevo contenedor
-            docker run -d -p 8080:5000 --name ${{ secrets.CONTAINER_NAME }} ${{ secrets.DOCKER_REPO }}:v1.1
-
-            # Opcional: Verificar el estado del contenedor
+            docker run -d -p 80:80 --name ${{ secrets.CONTAINER_NAME }} ${{ secrets.DOCKER_REPO }}:latest
+            
+            # Opcional: Comandos adicionales después de iniciar el contenedor
+            # Por ejemplo, verificar el estado del contenedor:
             docker ps
-
-            # Opcional: Otros comandos que necesites ejecutar en EC2
-            # Por ejemplo, copiar archivos, ejecutar scripts, etc.
