@@ -8,3 +8,11 @@ Patient.belongsTo(User,{
     onDelete: "CASCADE",
     onUpdate: "CASCADE"
 })
+
+User.hasOne(Patient, {
+    foreignKey: {
+        name: "user_id"
+    },
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE"
+})

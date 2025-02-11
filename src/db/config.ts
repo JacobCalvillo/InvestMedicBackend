@@ -16,12 +16,17 @@ const sequelize = new Sequelize(process.env.DB_NAME as string, process.env.DB_US
     }
 })
 
+// const sequelize = new Sequelize('innovamedic', 'postgres', '1234', {
+//   host: 'localhost',
+//   port: 5432,
+//   dialect: 'postgres',
+// })
+
 const startServer = async () => {
     try {
       await sequelize.authenticate();
       console.log('Database connection established successfully.');
   
-      // Sincronizar los modelos con la base de datos
       await sequelize.sync({ alter: true });
       console.log('All models were synchronized successfully.');
   
@@ -30,20 +35,18 @@ const startServer = async () => {
     }
 };
 
-const resetDatabase = async () => {
-    try {
-      // Sincroniza todos los modelos con la base de datos y los elimina
-      await sequelize.sync({ force: true });
-  
-      console.log('Base de datos reiniciada con éxito');
-    } catch (error) {
-      console.error('Error al reiniciar la base de datos:', error);
-    } finally {
-      // Cerrar la conexión a la base de datos
-      await sequelize.close();
-    }
+const dropSchema = async () => {
+  try {
+    await sequelize.query('DROP SCHEMA public CASCADE;');
+    await sequelize.query('CREATE SCHEMA public;');
+    console.log('Esquema reiniciado correctamente.');
+  } catch (error) {
+    console.error('Error al reiniciar el esquema:', error);
+  }
 };
 
+
+dropSchema()
 startServer();
 
 export default sequelize;

@@ -2,21 +2,18 @@ import User from "../db/models/User";
 
 import { encrypt, decrypt } from "../utils/bcrypt.handle";
 
-const registerNewUser = async (user: any) => {
+const registerNewUser = async (user: User) => {
     try {
-
         const existEmail = await User.findOne({ where: { email: user.email } });
-
         if (!existEmail) {
             const password = user.password;
-
+            console.log(user)
             if (!password || !user.username || !user.email || !user.phone) {
                 throw new Error('Faltan campos obligatorios');
             }
 
             // Cifrar la contraseña
             const hashedPassword = await encrypt(password);
-
             // Crear un nuevo usuario
             const newUser = await User.create({ 
                 username: user.username, 
@@ -24,14 +21,14 @@ const registerNewUser = async (user: any) => {
                 phone: user.phone,
                 password: hashedPassword,
             });
-
+            console.log(newUser);
             return newUser;
         } else {
-            return []; // Si el email ya está registrado, retornar un array vacío
+            return null; 
         }
     } catch (error) {
         console.log(error);
-        return []; // Manejar el error retornando un array vacío
+        return null; 
     }
 };
 

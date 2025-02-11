@@ -47,3 +47,17 @@ export const deleteUser = async(id: number) => {
         return null;
     }
 }
+
+export const getUserByEmail = async (email: string) => {
+    try {
+        const user = await User.findOne({ where: { email: email } });
+        if (user) {
+            return user;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+}
