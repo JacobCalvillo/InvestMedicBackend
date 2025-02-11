@@ -13,29 +13,17 @@ import { router as identificationRoutes } from './routes/identification.routes';
 import { router as identificationTypeRoutes } from './routes/identificationTypes.routes';
 import { router as emailRoutes } from './routes/email.routes';
 import cors from 'cors';
-import { transporter } from './mail/config';
-import { welcomeEmailmessage } from './mail/emailTemplates/messages';
 
 const app = express();
-
 const PORT = 5000;
 
 //middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
-
-
 app.use(cors());
 
-const message = {
-    from: 'jakeob00@gmail.com',
-    to: "jakeob99@gmail.com",
-    subject: 'Verificación de servicio',
-    text: 'For clients with plaintext support only',
-    html: welcomeEmailmessage,
-  };
-  
+
 //routes
 app.use('/api',
         userRoutes, 
@@ -61,15 +49,6 @@ app.get('/ping', (_req, res) => {
     res.send('pong');
 });     
 
-app.get('/sendEmail', (_req, res) => {
-    transporter.sendMail(message, (error, info) => {
-        if (error) {
-            res.send("Error al enviar:" + error);
-        } else {
-            res.send("Correo enviado:" + info.response); 
-        }
-    })
-});
 
 app.listen(process.env.PORT || PORT, () => {
     console.log(`Server running on port ${PORT}`);
