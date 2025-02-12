@@ -3,7 +3,7 @@ name: Despliegue en EC2 con Docker
 on:
   push:
     branches:
-      - dev  # Cambiado para coincidir con el comentario
+      - main  # Cambiado para coincidir con el comentario
 
 jobs:
   deploy:
@@ -34,10 +34,10 @@ jobs:
             docker ps -q --filter "name=${{ secrets.CONTAINER_NAME }}" | grep -q . && docker rm -f ${{ secrets.CONTAINER_NAME }} || true
 
             # Descargar la última imagen
-            docker pull ${{ secrets.DOCKER_REPO }}:v1.1
+            docker pull ${{ secrets.DOCKER_REPO }}:v1.2
 
             # Ejecutar el nuevo contenedor
-            docker run -d -p 5000:8080 --name ${{ secrets.CONTAINER_NAME }} ${{ secrets.DOCKER_REPO }}:v1.1
+            docker run -d -p 5000:8080 --name ${{ secrets.CONTAINER_NAME }} ${{ secrets.DOCKER_REPO }}:v1.2
 
             # Esperar unos segundos y verificar estado
             sleep 5
