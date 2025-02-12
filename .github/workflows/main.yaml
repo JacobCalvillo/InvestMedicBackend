@@ -37,6 +37,7 @@ jobs:
                         
             # Descargar la última imagen
             docker pull ${{ secrets.DOCKER_REPO }}:v1.2
+            
 
             # Ejecutar el nuevo contenedor
             docker run -d -p 5000:5000 --name ${{ secrets.CONTAINER_NAME }} ${{ secrets.DOCKER_REPO }}:v1.2
