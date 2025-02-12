@@ -3,7 +3,7 @@ name: Despliegue en EC2 con Docker
 on:
   push:
     branches:
-      - dev  # Cambiado para coincidir con el comentario
+      - main  # Cambiado para coincidir con el comentario
 
 jobs:
   deploy:
