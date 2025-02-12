@@ -32,6 +32,9 @@ jobs:
             # Verificar si el contenedor está corriendo y eliminarlo
             docker ps -q --filter "name=${{ secrets.CONTAINER_NAME }}" | grep -q . && docker rm -f ${{ secrets.CONTAINER_NAME }} || true
 
+            # Iniciar sesion de nuevo
+            docker login
+                        
             # Descargar la última imagen
             docker pull ${{ secrets.DOCKER_REPO }}:v1.2
 
