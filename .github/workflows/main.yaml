@@ -14,7 +14,7 @@ jobs:
 
   docker-login:
     runs-on: ubuntu-latest
-    needs: checkout  # Este job depende de la finalización de 'checkout'
+    needs: checkout  
     steps:
       - name: Iniciar sesión en Docker Hub
         uses: docker/login-action@v2
@@ -24,7 +24,7 @@ jobs:
 
   verify-ssh-connection:
     runs-on: ubuntu-latest
-    needs: docker-login  # Este job depende de la finalización de 'docker-login'
+    needs: docker-login  
     steps:
       - name: Verificar conexión SSH
         run: nc -zv ${{ secrets.EC2_HOST }} ${{ secrets.SSH_PORT }}
