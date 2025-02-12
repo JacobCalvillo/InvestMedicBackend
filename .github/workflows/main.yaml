@@ -4,23 +4,35 @@ on:
   push:
     branches:
       - main
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
 
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout código
         uses: actions/checkout@v4
 
+  docker-login:
+    runs-on: ubuntu-latest
+    needs: checkout  # Este job depende de la finalización de 'checkout'
+    steps:
       - name: Iniciar sesión en Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          
+
+  verify-ssh-connection:
+    runs-on: ubuntu-latest
+    needs: docker-login  # Este job depende de la finalización de 'docker-login'
+    steps:
       - name: Verificar conexión SSH
         run: nc -zv ${{ secrets.EC2_HOST }} ${{ secrets.SSH_PORT }}
 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: verify-ssh-connection  # Este job depende de la finalización de 'verify-ssh-connection'
+    steps:
       - name: Conectar a EC2 y desplegar
         uses: appleboy/ssh-action@master
         with:
@@ -32,12 +44,8 @@ jobs:
             # Verificar si el contenedor está corriendo y eliminarlo
             docker ps -q --filter "name=${{ secrets.CONTAINER_NAME }}" | grep -q . && docker rm -f ${{ secrets.CONTAINER_NAME }} || true
 
-            # Iniciar sesion de nuevo
-            docker login
-                        
             # Descargar la última imagen
             docker pull ${{ secrets.DOCKER_REPO }}:v1.2
-            
 
             # Ejecutar el nuevo contenedor
             docker run -d -p 5000:5000 --name ${{ secrets.CONTAINER_NAME }} ${{ secrets.DOCKER_REPO }}:v1.2
