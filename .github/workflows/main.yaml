@@ -3,8 +3,7 @@ name: Despliegue en EC2 con Docker
 on:
   push:
     branches:
-      - main  # Cambiado para coincidir con el comentario
-
+      - main
 jobs:
   deploy:
     runs-on: ubuntu-latest
