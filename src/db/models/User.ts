@@ -1,6 +1,5 @@
 import { DataTypes, Model } from "sequelize";
 import db from "../config";
-import Patient from "./Patient";
 import MedicalPractitioner from "./MedicalPractitioner";
 import Staff from "./Staff";
 import Role from "./Role";
@@ -43,7 +42,7 @@ User.init(
     {
         sequelize: db,
         timestamps: true,
-        modelName: "User"
+        modelName: "Users"
     }
 )
 

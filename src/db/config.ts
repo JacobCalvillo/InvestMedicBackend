@@ -22,31 +22,13 @@ const sequelize = new Sequelize(process.env.DB_NAME as string, process.env.DB_US
 //   dialect: 'postgres',
 // })
 
-const startServer = async () => {
-    try {
-      await sequelize.authenticate();
-      console.log('Database connection established successfully.');
-  
-      await sequelize.sync({ alter: true });
-      console.log('All models were synchronized successfully.');
-  
-    } catch (error) {
-      console.error('Unable to connect to the database:', error);
-    }
-};
+sequelize.sync({ force: true })  // ⚠ Esto eliminará y recreará todas las tablas
+  .then(() => {
+    console.log("Base de datos sincronizada correctamente.");
+  })
+  .catch((error) => {
+    console.error("Error al sincronizar la base de datos:", error);
+});
 
-const dropSchema = async () => {
-  try {
-    await sequelize.query('DROP SCHEMA public CASCADE;');
-    await sequelize.query('CREATE SCHEMA public;');
-    console.log('Esquema reiniciado correctamente.');
-  } catch (error) {
-    console.error('Error al reiniciar el esquema:', error);
-  }
-};
-
-
-dropSchema()
-startServer();
 
 export default sequelize;
