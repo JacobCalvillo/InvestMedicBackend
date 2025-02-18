@@ -1,6 +1,6 @@
 import Patient from "../db/models/Patient";
 import User from "../db/models/User";
-import { IPatientCreationAttributes } from "../utils/interfaces/IPaciente";
+import {IPatientCreationAttributes} from "../utils/interfaces/IPaciente";
 
 const createPatient = async (data: IPatientCreationAttributes) => {
     try {
@@ -18,13 +18,12 @@ const createPatient = async (data: IPatientCreationAttributes) => {
 
 const getPatient = async (id: number) => {
     try {
-        const patient = await Patient.findOne({
+        return await Patient.findOne({
             include: {
                 model: User,
             },
-            where: { userId: id }
+            where: {userId: id}
         });
-        return patient;
     } catch (error) {
         console.error("Error al obtener el paciente:", error);
         return null;
@@ -33,12 +32,11 @@ const getPatient = async (id: number) => {
 
 const getPatients = async () => {
     try {
-        const patient = await Patient.findAll({
+        return await Patient.findAll({
             include: {
                 model: User
             }
         });
-        return patient;
     } catch (error) {
         console.error("Error al obtener el paciente:", error);
         return null;
