@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import { router as userRoutes } from './routes/user.routes';
 import { router as fileRoutes } from './routes/file.routes';
 import { router as patientRoutes } from './routes/patient.routes';
+import { router as medicalPractitionerRoutes } from './routes/medicalpractitioner.routes';
 // import { router as appointmentRoutes } from './routes/appointment.routes';
 import { router as clientRoutes } from './routes/client.routes';
 // import { router as serviceRoutes } from './routes/services.routes';
@@ -37,6 +38,7 @@ app.use('/api/v1',
         userRoutes,
         fileRoutes, 
         patientRoutes,
+        medicalPractitionerRoutes,
         // appointmentRoutes,
         clientRoutes,
         // serviceRoutes,
