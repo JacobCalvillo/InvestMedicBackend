@@ -7,7 +7,7 @@ import {
         getFileController, 
         getFileUrlController,
         getSignedUrlController
-    } from "../controllers/fileController";
+    } from "../controllers/file.controller";
 
 const router = express.Router();
 

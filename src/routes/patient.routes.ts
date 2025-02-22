@@ -1,11 +1,13 @@
-import { Router } from "express";
-import { createPatientController, getPatientsController, getPatientController } from "../controllers/patientController";
+import express from "express";
+import { getAllPatientsController, getPatientByIdController, createPatientController } from "../controllers/patient.controller";
 
-const router = Router();
+const router = express.Router();
 
-router.get('/patients', getPatientsController);
-router.get('/patient/:id', getPatientController);
+//GET
+router.get("/patients", getAllPatientsController)
+router.get("/patient/:id", getPatientByIdController);
 
-router.post('/patient', createPatientController);
+//POST
+router.post("/patient", createPatientController)
 
-export { router }
+export { router };

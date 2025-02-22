@@ -1,15 +1,10 @@
-import {
-    getIdentificationTypesController,
-    createIdentificationTypeController
-} from "../controllers/IdentificationTypeController";
-
+import { getIdentificationTypesController } from "../controllers/identificationTypes.controller";
 import { Router } from "express";
 
 const router = Router();
 
-router.get('/identifications/types', getIdentificationTypesController);
-
-router.post('/identification/type', createIdentificationTypeController);
+//GET
+router.get("/identificationTypes", getIdentificationTypesController);
 
 
 export { router };

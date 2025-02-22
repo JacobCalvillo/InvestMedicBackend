@@ -1,19 +1,27 @@
 import express from "express";
-import { getUsers, getUserForId, userUpdate, userDelete, getUserByEmailController } from "../controllers/userController";
-
+import { getUsersController,
+        getUserByIdController,
+        createUserController,
+        deleteUserController,
+        updateUserController,
+    } from "../controllers/user.controller";
+import { loginUserController, registerUserController } from "../controllers/auth.controller";
 
 const router = express.Router();
 
 //GET
-router.get("/users", getUsers);
-router.get("/user/:id", getUserForId);
-router.get("/user/email/:email", getUserByEmailController);
+router.get("/users", getUsersController);
+router.get("/user/:id", getUserByIdController);
+
+//POST
+router.post("/user",createUserController);
+router.post("/register/user", registerUserController);
+router.post("/login/user", loginUserController);
 
 //PUT
-router.put("/user", userUpdate);
+router.put("/user", updateUserController);
 
 //DELETE
-router.delete("/user/:id", userDelete);
-
+router.delete("/user/:id", deleteUserController);
 
 export { router };
