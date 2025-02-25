@@ -20,6 +20,7 @@ export const registerUserController = async (req: Request, res: Response ) => {
     try {
         const user = await registerUser(req.body);
         if (user) {
+            console.log(user);
             res.status(201).send(user);
         } else {
             res.status(400).send(user);
