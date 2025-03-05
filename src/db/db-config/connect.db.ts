@@ -3,13 +3,15 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const client = new Client({
-    user: process.env.DB_DEV_USER,
-    host: process.env.DB_DEV_HOST,
-    database: process.env.DB_DEV_DATABASE,
-    password: process.env.DB_DEV_PASSWORD,
-    port: Number(process.env.DB_DEV_PORT)
-});
+// const client = new Client({
+//     user: process.env.DB_DEV_USER,
+//     host: process.env.DB_DEV_HOST,
+//     database: process.env.DB_DEV_DATABASE,
+//     password: process.env.DB_DEV_PASSWORD,
+//     port: Number(process.env.DB_DEV_PORT)
+// });
+
+const client = new Client(process.env.DATABASE_URL);
 
 client.connect()
     .then(() => {

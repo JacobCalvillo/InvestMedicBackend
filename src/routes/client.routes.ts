@@ -1,11 +1,16 @@
-import { createCustomerController, getClientSecretController } from "../controllers/customer.controller";
+import {
+    createCustomerController,
+    getClientSecretController,
+    createPaymentController
+} from "../controllers/customer.controller";
 import { Router } from "express";
-
 
 const router = Router();
 
-router.post('/client', createCustomerController);
+//POST
 
+router.post('/client', createCustomerController);
 router.post('/client/secret', getClientSecretController);
+router.post('/client/payment', createPaymentController);
 
 export { router };

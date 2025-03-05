@@ -35,8 +35,6 @@ export const createAppointment = async(data: Appointment): Promise<Appointment |
                 data.medicalPractitionerId,
                 data.serviceId
             ]);
-
-        console.log(newAppointment.rows[0]); // 🔍 Verifica si devuelve un objeto válido
         return newAppointment.rows[0] || null;
     } catch (error) {
         console.log(error);

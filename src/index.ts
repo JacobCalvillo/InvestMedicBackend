@@ -15,6 +15,7 @@ import { router as paymentRoutes } from './routes/payment.routes';
 import { router as emailRoutes } from './routes/email.routes';
 import { router as clientRoutes } from './routes/client.routes';
 import { router as serviceRoutes } from './routes/service.routes';
+import { router as webhookRoutes } from './routes/webhook.routes';
 // import { router as identificationRoutes } from './routes/identification.routes';
 
 
@@ -52,7 +53,8 @@ app.use('/api/v1',
         serviceRoutes,
         // identificationRoutes,
         identificationTypeRoutes,
-        emailRoutes
+        emailRoutes,
+        webhookRoutes
     );
 
 

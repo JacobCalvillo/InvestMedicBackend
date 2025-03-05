@@ -19,6 +19,7 @@ export const loginUserController = async (req:Request, res: Response) => {
 export const registerUserController = async (req: Request, res: Response ) => {
     try {
         const user = await registerUser(req.body);
+        console.log(user);
         if (user) {
             console.log(user);
             res.status(201).send(user);

@@ -1,4 +1,9 @@
-import { getServicesController, getServiceByIdController } from '../controllers/service.controller';
+import {
+    getServicesController,
+    getServiceByIdController,
+    createServiceController,
+    stripeSessionController
+} from '../controllers/service.controller';
 import { Router } from 'express';
 
 const router = Router();
@@ -7,5 +12,8 @@ const router = Router();
 router.get('/services', getServicesController);
 router.get('/service/:id', getServiceByIdController)
 
+//POST
+router.post('/services', createServiceController);
+router.post('/services/stripe', stripeSessionController);
 
 export { router };

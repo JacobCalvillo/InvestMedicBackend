@@ -22,9 +22,9 @@ export const getAppointmentsController = async (req: Request, res: Response) => 
 
 export const createAppointmentController = async (req: Request, res: Response) => {
     try {
-        console.log("Controller:", req.body);
+
         const newAppointment = await createAppointment(req.body);
-        console.log(newAppointment);
+
         if (newAppointment) {
             console.log(newAppointment);
             res.status(201).send(newAppointment);
