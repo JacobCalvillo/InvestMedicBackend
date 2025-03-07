@@ -1,9 +1,9 @@
-import { Client } from 'pg';
+import { Pool } from 'pg';
 import dotenv from "dotenv";
 
 dotenv.config();
 
-// const client = new Client({
+// const pool = new Pool({
 //     user: process.env.DB_DEV_USER,
 //     host: process.env.DB_DEV_HOST,
 //     database: process.env.DB_DEV_DATABASE,
@@ -11,14 +11,11 @@ dotenv.config();
 //     port: Number(process.env.DB_DEV_PORT)
 // });
 
-const client = new Client(process.env.DATABASE_URL);
+const client = new Pool(
+    {
+        connectionString: process.env.DATABASE_URL
+    }
+);
 
-client.connect()
-    .then(() => {
-        console.log('connected to db');
-    })
-    .catch(err => {
-        console.log('Error de conexion', err);
-    });
 
 export default client;

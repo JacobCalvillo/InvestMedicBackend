@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@aws-sdk/client-s3": "^3.676.0",
+    "@aws-sdk/client-ses": "^3.758.0",
     "@aws-sdk/s3-request-presigner": "^3.685.0",
     "apicache": "^1.6.3",
     "bcrypt": "^5.1.1",
@@ -8,6 +9,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "google-auth-library": "^9.15.1",
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9",
@@ -37,7 +39,7 @@
   "description": "API project",
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "nodemon index.ts",
+    "dev": "nodemon --delay 500ms server.ts",
     "build": "tsc",
     "serve": "node dist/index.js",
     "test": "jest",

@@ -3,6 +3,6 @@ import { Router } from "express";
 
 const router = Router();
 
-router.post('/email', sendWelcomeEmailController);
+router.post('/email/welcome', sendWelcomeEmailController);
 
 export { router };

@@ -1,6 +1,7 @@
 import { loginUser, registerUser } from "../services/auth.service";
 import { Request, Response } from "express";
 import {handleHttp} from "../utils/error.handle";
+import { sendWelcomeEmail } from "../services/email.service";
 
 export const loginUserController = async (req:Request, res: Response) => {
     try {
@@ -21,8 +22,7 @@ export const registerUserController = async (req: Request, res: Response ) => {
         const user = await registerUser(req.body);
         console.log(user);
         if (user) {
-            console.log(user);
-            res.status(201).send(user);
+            res.status(200).send({user: user, message: await sendWelcomeEmail(user.email, user.username)});
         } else {
             res.status(400).send(user);
         }

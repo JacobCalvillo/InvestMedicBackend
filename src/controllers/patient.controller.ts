@@ -30,6 +30,7 @@ export const getPatientByIdController = async(req: Request, res:Response) => {
 export const createPatientController = async (req: Request, res:Response) => {
     try {
         const patient = req.body;
+        console.log(patient);
         const { identificationTypeId } = req.query;
         const newPatient = await createPatientWithIdentification(patient, req.query.identificationNumber,
             Number(identificationTypeId), req.query.identificationUrl)

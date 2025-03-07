@@ -17,11 +17,13 @@ import { router as clientRoutes } from './routes/client.routes';
 import { router as serviceRoutes } from './routes/service.routes';
 import { router as webhookRoutes } from './routes/webhook.routes';
 // import { router as identificationRoutes } from './routes/identification.routes';
+import dotenv from "dotenv";
 
+dotenv.config();
 
 const app = express();
 const cache = apicache.middleware;
-const PORT = 5000;
+const PORT = Number(process.env.PORT);
 
 //middleware
 app.use(cors(/*{
@@ -57,9 +59,20 @@ app.use('/api/v1',
         webhookRoutes
     );
 
+app.get('/', (req, res) => {
+    res.send('¡Servidor en funcionamiento!');
+});
 
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+})
+
+process.once('SIGUSR2', () => {
+    process.kill(process.pid, 'SIGUSR2');
+})
+
+process.on('SIGINT',() => {
+    process.kill(process.pid, 'SIGINT');
 })
 
 
