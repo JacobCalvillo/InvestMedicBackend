@@ -7,7 +7,7 @@ FROM node:20-alpine3.20 as base
 WORKDIR /usr/src/app
 
 # Copy the .env file to the container
-COPY .env .env
+COPY ../.env .env
 
 FROM base as deps
 

@@ -7,6 +7,11 @@ dotenv.config();
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
+const successUrl = process.env.NODE_ENV === 'development'
+    ? 'https://app-front-medic-3kyzdoube-jacobcalvillos-projects.vercel.app/success'
+    : `${process.env.FRONTEND_URL}/success`;
+
+
 export const stripeSession = async (serviceId: number,
                                     customerEmail: string, quantity:number, appointmentId:number) => {
     try {
@@ -22,7 +27,8 @@ export const stripeSession = async (serviceId: number,
             ],
             mode: 'payment',
             customer_email: customerEmail,
-            success_url: `${process.env.FRONTEND_URL}/success`,
+
+            success_url: successUrl,
             metadata: {
                 appointment_id: appointmentId,
             }
