@@ -9,7 +9,7 @@
 # https://github.com/docker/awesome-compose
 services:
   server:
-    build: .
+    build: src
     ports:
       - "${PORT}:${PORT}"
     environment:

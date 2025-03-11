@@ -5,7 +5,7 @@
 # https://docs.docker.com/go/build-context-dockerignore/
 
 **/.classpath
-**/.dockerignore
+.dockerignore
 **/.git
 **/.gitignore
 **/.project
@@ -20,8 +20,8 @@
 **/*.jfm
 **/charts
 **/docker-compose*
-**/compose.y*ml
-**/Dockerfile*
+../compose.yaml
+../Dockerfile
 **/node_modules
 **/npm-debug.log
 **/obj
