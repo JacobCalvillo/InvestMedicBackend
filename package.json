@@ -42,10 +42,10 @@
   "description": "API project",
   "scripts": {
     "prestart": "npm install && npm run build",
-    "start": "node src/build/server.js",
+    "start": "node build/server.js",
     "dev": "nodemon --ext ts --delay 500ms src/server.ts",
     "build": "tsc",
-    "serve": "node src/build/server.js"
+    "serve": "node build/server.js"
   },
   "author": "",
   "license": "ISC"
