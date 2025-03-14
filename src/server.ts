@@ -41,6 +41,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
+app.options('*', cors());
+
 
 //routes
 app.use('/api/v1',
