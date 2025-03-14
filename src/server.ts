@@ -27,12 +27,19 @@ const PORT = Number(process.env.PORT);
 
 const allowedOrigins = [
     "https://app-front-medic.vercel.app",
+    'app-front-medic-jacobcalvillos-projects.vercel.app',
     "http://localhost:5173"
 ];
 
 //middleware
 app.use(cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true
 }));
 
