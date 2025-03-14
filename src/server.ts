@@ -26,7 +26,7 @@ const cache = apicache.middleware;
 const PORT = Number(process.env.PORT);
 
 const allowedOrigins = [
-    "https://app-front-medic-92e734qvc-jacobcalvillos-projects.vercel.app",
+    "https://app-front-medic.vercel.app",
     "http://localhost:5173"
 ];
 
