@@ -3,3 +3,7 @@ node_modules
 src\.env
 .env
 package-lock.json
+compose.yaml
+Docker-compose.yaml
+Dockerfile
+Dockerfile-postgres

@@ -50,6 +50,7 @@ export const createUserController = async (req: Request, res: Response ) => {
     try {
         const user = await createUser(req.body);
         if (user) {
+            console.log()
             res.status(200).send(user);
         } else {
             res.status(400).send({ message: user });

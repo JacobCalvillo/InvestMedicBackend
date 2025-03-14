@@ -30,13 +30,15 @@ export const getPatientByIdController = async(req: Request, res:Response) => {
 export const createPatientController = async (req: Request, res:Response) => {
     try {
         const patient = req.body;
+        console.log(patient);
         const { identificationTypeId } = req.query;
         const newPatient = await createPatientWithIdentification(patient, req.query.identificationNumber,
             Number(identificationTypeId), req.query.identificationUrl)
-        if (!newPatient) {
-            res.status(404).send(newPatient);
+        if (newPatient) {
+            res.status(201).send(newPatient);
+        } else {
+            res.status(400).send(patient);
         }
-        res.status(200).send(newPatient);
     } catch (error) {
         handleHttp(res, 'ERROR_CREATE_PATIENT', error);
     }

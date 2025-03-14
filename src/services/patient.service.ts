@@ -105,14 +105,14 @@ export const createPatientWithIdentification = async (
     number: string | QueryString.ParsedQs | (string | QueryString.ParsedQs)[] | undefined,
     identificationTypeId: number,
     identificationDocumentUrl: string | QueryString.ParsedQs | (string | QueryString.ParsedQs)[] | undefined,
-): Promise<boolean> => {
+): Promise<Patient | null> => {
     try {
         await client.query('BEGIN'); // Begin transaction
-        // Step 1: Insert into the `patient` table
+
         const insertPatientQuery = `
             INSERT INTO patient (
-                name, 
-                last_name, 
+                name,
+                last_name,
                 birth_date,
                 gender,
                 street,
@@ -127,12 +127,10 @@ export const createPatientWithIdentification = async (
                 marital_status,
                 privacy_consent,
                 user_id
-            ) 
-            VALUES (
-                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16
-            ) 
-            RETURNING id;
-        `;
+            )
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+            RETURNING *;`;
+
         const patientResult = await client.query(insertPatientQuery, [
             patient.name,
             patient.lastName,
@@ -151,15 +149,17 @@ export const createPatientWithIdentification = async (
             patient.privacyConsent,
             patient.userId
         ]);
-        const patientId = patientResult.rows[0]?.id;
-        if (!patientId) new Error('Failed to create patient');
 
-        // Step 2: Insert into `identification_user` table
+        const newPatient = patientResult.rows[0];
+        if (!newPatient) new Error('Failed to create patient');
+
+        // Insertar identificación
         const insertIdentificationQuery = `
-            INSERT INTO identification_user (number, identification_document_url, identification_type_id) 
-            VALUES ($1, $2, $3) 
+            INSERT INTO identification_user (number, identification_document_url, identification_type_id)
+            VALUES ($1, $2, $3)
             RETURNING id;
         `;
+
         const identificationResult = await client.query(insertIdentificationQuery, [
             number,
             identificationDocumentUrl,
@@ -169,18 +169,22 @@ export const createPatientWithIdentification = async (
         const identificationId = identificationResult.rows[0]?.id;
         if (!identificationId) new Error('Failed to create identification_user');
 
-        // Step 3: Link patient and identification in `patient_identification`
+        // Relacionar paciente con identificación
         const insertPatientIdentificationQuery = `
-            INSERT INTO patient_identification (patient_id, identification_id) 
+            INSERT INTO patient_identification (patient_id, identification_id)
             VALUES ($1, $2);
         `;
-        await client.query(insertPatientIdentificationQuery, [patientId, identificationId]);
+        await client.query(insertPatientIdentificationQuery, [newPatient.id, identificationId]);
 
         await client.query('COMMIT'); // Commit the transaction
-        return true;
+
+        return newPatient;
+
     } catch (error) {
         await client.query('ROLLBACK'); // Rollback transaction on error
         console.error('Transaction failed:', error);
-        return false;
+        return null;
     }
 };
+
+

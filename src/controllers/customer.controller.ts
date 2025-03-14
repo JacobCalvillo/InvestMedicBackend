@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 import Stripe from 'stripe';
-import { createCustomer, createPaymentIntent } from '../services/customer.service';
+import {
+  createCustomer,
+  createPaymentIntent,
+  createPayment
+} from '../services/customer.service';
 
 export const createCustomerController = async (req: Request, res: Response) => {
   try {
@@ -29,5 +33,18 @@ export const getClientSecretController = async (req: Request, res: Response) => 
   }
 }
 
-
+export const createPaymentController = async (req: Request, res: Response) => {
+  try {
+    const params = req.body;
+    const payment = await createPayment(params);
+    if (payment) {
+      res.status(201).send(payment);
+    } else {
+      res.status(400).send(payment)
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+  }
+}
 

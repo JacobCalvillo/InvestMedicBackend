@@ -33,6 +33,6 @@ export const createPayment =  async(paymentParams: Stripe.PaymentIntentCreatePar
         return paymentIntent;
     } catch (error: unknown) {
         console.error(error);
-        return error;
+        return [];
     }
 }
