@@ -6,15 +6,15 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-if(!process.env.AWS_BUCKET_REGION || !process.env.AWS_PUBLIC_KEY || !process.env.AWS_SECRET_KEY || !process.env.AWS_BUCKET_NAME) {
+if(!process.env.BUCKET_REGION || !process.env.PUBLIC_KEY || !process.env.SECRET_KEY || !process.env.BUCKET_NAME) {
     throw new Error('AWS credentials not found');
 }
 
 const client = new S3Client({ 
-    region: process.env.AWS_BUCKET_REGION,
+    region: process.env.BUCKET_REGION,
     credentials: {
-        accessKeyId: process.env.AWS_PUBLIC_KEY,
-        secretAccessKey: process.env.AWS_SECRET_KEY
+        accessKeyId: process.env.PUBLIC_KEY,
+        secretAccessKey: process.env.SECRET_KEY
     }
 })
 
