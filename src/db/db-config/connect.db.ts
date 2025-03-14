@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+const connectionString = process.env.DATABASE_URL_SUPABASE as string
+
 // const pool = new Pool({
 //     user: process.env.DB_DEV_USER,
 //     host: process.env.DB_DEV_HOST,
@@ -13,7 +15,9 @@ dotenv.config();
 
 const client = new Pool(
     {
-        connectionString: process.env.DATABASE_URL
+        connectionString: connectionString,
+        ssl: { rejectUnauthorized: false },
+        statement_timeout: 30000
     }
 );
 
