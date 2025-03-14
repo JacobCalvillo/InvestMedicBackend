@@ -25,14 +25,16 @@ const app = express();
 const cache = apicache.middleware;
 const PORT = Number(process.env.PORT);
 
+const allowedOrigins = [
+    "https://app-front-medic-92e734qvc-jacobcalvillos-projects.vercel.app",
+    "http://localhost:5173"
+];
+
 //middleware
-app.use(cors(/*{
-    origin: "*",
-    credentials: true,
-    maxAge: 1800,
-    allowedHeaders: ["Content-Type", "Authorization"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-}*/));
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true
+}));
 
 app.use(cache('5 minutes'));
 app.use(express.urlencoded({ extended: true }));
