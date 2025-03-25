@@ -25,11 +25,6 @@ const app = express();
 const cache = apicache.middleware;
 const PORT = Number(process.env.PORT);
 
-const allowedOrigins = [
-    "https://app-front-medic.vercel.app",
-    'app-front-medic-jacobcalvillos-projects.vercel.app',
-    "http://localhost:5173"
-];
 const corsOptions ={
     origin:'*',
     credentials:true,            //access-control-allow-credentials:true
