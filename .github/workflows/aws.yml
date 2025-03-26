@@ -27,7 +27,7 @@ jobs:
           node-version: '18'
           
       - name: Install dependencies
-        run: npm ci
+        run: npm install
         
       - name: Run tests
         run: npm test
@@ -49,13 +49,16 @@ jobs:
             cd /home/${{ secrets.EC2_USER }}/$DEPLOY_DIR
             
             # Instalar dependencias
-            npm ci
+            npm install
             
             # Crear build de producción si es necesario
             npm run build
             
             # Actualizar variables de entorno
             cp /home/${{ secrets.EC2_USER }}/env-files/dev.env .env
+            
+            # Ejecutar migraciones si es necesario
+            npm run db:migrate
             
             # Detener la aplicación anterior si existe
             pm2 stop dev-api || true
