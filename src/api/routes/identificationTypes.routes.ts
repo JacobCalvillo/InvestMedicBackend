@@ -1,10 +1,9 @@
-import { getIdentificationTypesController } from "../controllers/identificationTypes.controller";
-import { Router } from "express";
+import {IdentificationTypesController} from "../controllers/identificationTypes.controller";
+import {RequestHandler, Router} from "express";
 
-const router = Router();
+export function identificationTypesRoutes(identificationTypesController: IdentificationTypesController, authenticate: RequestHandler): Router {
+    const router = Router();
 
-//GET
-router.get("/identificationTypes", getIdentificationTypesController);
-
-
-export { router };
+    router.get("/identificationTypes", identificationTypesController.getIdentificationTypes);
+    return router;
+}

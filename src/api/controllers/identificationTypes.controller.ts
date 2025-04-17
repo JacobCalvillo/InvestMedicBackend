@@ -1,16 +1,11 @@
-import { getIdentificationsType } from "../../core/services/identificationType.service";
-import { Request, Response } from "express";
-import {handleHttp} from "../../core/utils/error.handle";
+import {IdentificationTypesService} from "../../core/domain/interfaces/services/IdentificationTypesService";
+import {Request, Response} from "express";
 
-export const getIdentificationTypesController = async (_req: Request, res: Response) => {
-    try {
-        const identificationTypes = await getIdentificationsType();
-        if(identificationTypes) {
-            res.status(200).send(identificationTypes);
-        } else {
-            res.status(400).send({ message: 'No hay identificaciones registradas' });
-        }
-    } catch (error) {
-        handleHttp(res, 'ERROR_GET_IDENTIFICATION_TYPES', error);
-    }
+export class IdentificationTypesController {
+    constructor(private identificationTypesService: IdentificationTypesService) {}
+
+    getIdentificationTypes = async (_req: Request, res: Response): Promise<void> => {
+        const identificationTypes = await this.identificationTypesService.getIdentificationTypes();
+        res.status(200).json(identificationTypes);
+    };
 }

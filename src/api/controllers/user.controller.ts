@@ -62,6 +62,9 @@ export class UserController {
 
     register = catchAsync(async (req: Request, res: Response): Promise<void> => {
         const result = await this.userService.register(req.body);
+        if (!result) {
+            throw new AppError('User registration failed', 400);
+        }
         res.status(201).json(result);
     });
 }

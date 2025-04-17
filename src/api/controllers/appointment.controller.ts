@@ -29,8 +29,8 @@ export class AppointmentController {
 
             res.status(200).json(appointment);
         } catch (error) {
-            console.error('Error fetching appointment:', error);
-            res.status(500).json({ message: 'Failed to retrieve appointment' });
+            console.error('Error fetching appointments:', error);
+            res.status(500).json({ message: 'Failed to retrieve appointments' });
         }
     };
 
@@ -40,8 +40,8 @@ export class AppointmentController {
             const appointment = await this.appointmentService.createAppointment(appointmentData);
             res.status(201).json(appointment);
         } catch (error) {
-            console.error('Error creating appointment:', error);
-            res.status(500).json({ message: 'Failed to create appointment' });
+            console.error('Error creating appointments:', error);
+            res.status(500).json({ message: 'Failed to create appointments' });
         }
     };
 
@@ -57,8 +57,8 @@ export class AppointmentController {
 
             res.status(200).json(appointment);
         } catch (error) {
-            console.error('Error updating appointment:', error);
-            res.status(500).json({ message: 'Failed to update appointment' });
+            console.error('Error updating appointments:', error);
+            res.status(500).json({ message: 'Failed to update appointments' });
         }
     };
 
@@ -76,8 +76,8 @@ export class AppointmentController {
 
             res.status(200).json(appointment);
         } catch (error) {
-            console.error('Error updating appointment status:', error);
-            res.status(500).json({ message: 'Failed to update appointment status' });
+            console.error('Error updating appointments status:', error);
+            res.status(500).json({ message: 'Failed to update appointments status' });
         }
     };
 }

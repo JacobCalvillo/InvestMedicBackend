@@ -12,6 +12,12 @@ import {PostgresUserRepository} from "../infrastructure/database/repositories/Po
 import {UserServiceImpl} from "../core/services/UserServiceImpl";
 import {UserController} from "./controllers/user.controller";
 import {userRoutes} from "./routes/user.routes";
+import {IdentificationTypesImpl} from "../core/services/IdentificationTypesImpl";
+import {
+    PostgresIdentificationTypesRepository
+} from "../infrastructure/database/repositories/PostgresIdentificationTypesRepository";
+import {IdentificationTypesController} from "./controllers/identificationTypes.controller";
+import {identificationTypesRoutes} from "./routes/identificationTypes.routes";
 
 export function setupRoutes(app: express.Application): void {
     // Create database connection
@@ -20,6 +26,7 @@ export function setupRoutes(app: express.Application): void {
     // Create repositories
     const appointmentRepository = new PostgresAppointmentRepository(dbPool);
     const userRepository = new PostgresUserRepository(dbPool);
+    const identificationTypesRepository = new PostgresIdentificationTypesRepository(dbPool);
 
     // servicios compartidos
     const passwordHasher =  new PasswordHasher();
@@ -29,6 +36,7 @@ export function setupRoutes(app: express.Application): void {
     const notificationService = new EmailNotificationService();
     const appointmentService = new AppointmentService(appointmentRepository, notificationService);
     const userService = new UserServiceImpl(userRepository, passwordHasher, authService);
+    const identificationTypesService = new IdentificationTypesImpl(identificationTypesRepository);
 
 
     // Create middleware
@@ -37,11 +45,12 @@ export function setupRoutes(app: express.Application): void {
     // Create controllers
     const appointmentController = new AppointmentController(appointmentService);
     const userController = new UserController(userService);
+    const identificationTypesController = new IdentificationTypesController(identificationTypesService);
 
     // Register routes
     app.use('/api/v1', appointmentRoutes(appointmentController, authenticate));
     app.use('/api/v1', userRoutes(userController));
-
+    app.use('/api/v1', identificationTypesRoutes(identificationTypesController, authenticate));
 
     // Add more routes as needed...
 }

@@ -1,9 +1,9 @@
-import { User } from '../domain/entities/User';
-import { UserRepository} from "../domain/interfaces/repositories/UserRepository";
-import { UserService } from '../domain/interfaces/services/UserService'
-import { AuthService} from "../domain/interfaces/services/AuthService";
-import { AppError} from "../domain/errors/AppError";
-import { PasswordHasher } from '../../infrastructure/security/PasswordHasher'
+import {User} from '../domain/entities/User';
+import {UserRepository} from "../domain/interfaces/repositories/UserRepository";
+import {UserService} from '../domain/interfaces/services/UserService'
+import {AuthService} from "../domain/interfaces/services/AuthService";
+import {AppError} from "../domain/errors/AppError";
+import {PasswordHasher} from '../../infrastructure/security/PasswordHasher'
 
 export class UserServiceImpl implements UserService {
     constructor(
@@ -32,8 +32,7 @@ export class UserServiceImpl implements UserService {
         }
 
         // Hashear la contraseña
-        const hashedPassword = await this.passwordHasher.hash(user.password);
-        user.password = hashedPassword;
+        user.password = await this.passwordHasher.hash(user.password);
 
         return this.userRepository.create(user);
     }

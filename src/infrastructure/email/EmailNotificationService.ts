@@ -48,7 +48,7 @@ export class EmailNotificationService implements NotificationService {
         // In a real implementation, you'd query the database to get the patient's email
         const patientEmail = 'patient@example.com'; // Replace with actual patient email lookup
 
-        const subject = 'Your appointment has been confirmed';
+        const subject = 'Your appointments has been confirmed';
         const htmlBody = `
       <html>
         <body>
@@ -74,7 +74,7 @@ export class EmailNotificationService implements NotificationService {
     async sendAppointmentCancellation(appointment: Appointment): Promise<boolean> {
         const patientEmail = 'patient@example.com'; // Replace with actual patient email lookup
 
-        const subject = 'Your appointment has been cancelled';
+        const subject = 'Your appointments has been cancelled';
         const htmlBody = `
       <html>
         <body>

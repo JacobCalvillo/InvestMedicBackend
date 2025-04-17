@@ -1,4 +1,4 @@
-// src/core/services/appointment/AppointmentService.ts
+// src/core/services/appointments/AppointmentService.ts
 import { Appointment } from '../domain/entities/Appointment';
 import { AppointmentRepository } from '../domain/interfaces/repositories/AppointmentRepository';
 import {NotificationService} from "../domain/interfaces/services/NotificationService";

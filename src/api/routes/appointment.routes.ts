@@ -1,4 +1,4 @@
-// src/api/routes/appointment.routes.ts
+// src/api/routes/appointments.routes.ts
 import {RequestHandler, Router} from 'express';
 import { AppointmentController } from '../controllers/appointment.controller';
 import { validateAppointment } from '../validators/appointment.validator';
@@ -9,10 +9,10 @@ export function appointmentRoutes(appointmentController: AppointmentController, 
     // Get all appointments
     router.get('/appointments', authenticate, appointmentController.getAppointments);
 
-    // Get appointment by ID
+    // Get appointments by ID
     router.get('/appointments/:id', authenticate, appointmentController.getAppointmentById);
 
-    // Create new appointment
+    // Create new appointments
     router.post(
         '/appointments',
         authenticate,
@@ -20,7 +20,7 @@ export function appointmentRoutes(appointmentController: AppointmentController, 
         appointmentController.createAppointment
     );
 
-    // Update appointment
+    // Update appointments
     router.put(
         '/appointments',
         authenticate,
@@ -28,7 +28,7 @@ export function appointmentRoutes(appointmentController: AppointmentController, 
         appointmentController.updateAppointment
     );
 
-    // Update appointment status
+    // Update appointments status
     router.put(
         '/appointments/:id/:statusId',
         authenticate,
