@@ -1,4 +1,4 @@
-import { updateStatusAppointment } from "../services/appointment.service";
+import { updateStatusAppointment } from "../core/services/appointment.service";
 import Stripe from "stripe";
 
 export const handleStripeEvent = async(event: Stripe.Event) => {

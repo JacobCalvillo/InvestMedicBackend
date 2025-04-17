@@ -8,3 +8,5 @@ Docker-compose.yaml
 Dockerfile
 Dockerfile-postgres
 .vercel
+.vscode
+.idea

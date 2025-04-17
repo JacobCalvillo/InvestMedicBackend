@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 import { Request, Response } from "express";
-import { handleHttp } from "../utils/error.handle";
+import { handleHttp } from "../core/utils/error.handle";
 import { handleStripeEvent} from "./webhook.service";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
