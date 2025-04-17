@@ -1,89 +1,32 @@
-name: Deploy API Directamente a EC2
+name: Deploy to EC2
 
 on:
   push:
-    branches: [ development, dev, dev-org ]
-  workflow_dispatch:
+    branches:
+      - dev-org
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repositories
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
-          
-      - name: Adding Known Hosts
-        run: ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          
-      - name: Install dependencies
-        run: npm install
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.7.0
+      with:
+        ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+    - name: Deploy to EC2
+      run: |
+        # Add EC2 host to known hosts
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
         
-        
-      - name: Desplegar directamente a EC2
-        run: |
-          # Crear un archivo de despliegue con la fecha y hora actual
-          TIMESTAMP=$(date +%Y%m%d%H%M%S)
-          DEPLOY_DIR="api-deploy-$TIMESTAMP"
-          
-          # Crear una carpeta de despliegue en el servidor remoto
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "mkdir -p /home/${{ secrets.EC2_USER }}/$DEPLOY_DIR"
-          
-          # Copiar los archivos al servidor
-          rsync -avz --exclude 'node_modules' --exclude '.git' ./ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/$DEPLOY_DIR/
-          
-          # Ejecutar comandos de despliegue en el servidor remoto
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
-            cd /home/${{ secrets.EC2_USER }}/$DEPLOY_DIR
-            
-            # Instalar dependencias
-            npm install
-            
-            # Crear build de producción si es necesario
-            npm run build
-            
-            # Actualizar variables de entorno
-            cp /home/${{ secrets.EC2_USER }}/env-files/dev.env .env
-            
-            # Ejecutar migraciones si es necesario
-            npm run db:migrate
-            
-            # Detener la aplicación anterior si existe
-            pm2 stop dev-api || true
-            
-            # Iniciar la nueva versión
-            pm2 start npm --name "dev-api" -- run start:dev
-            
-            # Crear un enlace simbólico a la versión actual
-            rm -f /home/${{ secrets.EC2_USER }}/current-api
-            ln -s /home/${{ secrets.EC2_USER }}/$DEPLOY_DIR /home/${{ secrets.EC2_USER }}/current-api
-            
-            # Limpiar despliegues antiguos (mantener los 3 más recientes)
-            cd /home/${{ secrets.EC2_USER }}
-            ls -dt api-deploy-* | tail -n +4 | xargs rm -rf
-          EOF
-          
-      - name: Verificar despliegue
-        run: |
-          # Esperar a que la API esté lista
-          sleep 15
-          
-          # Verificar que la API responde correctamente
-          HEALTH_CHECK=$(curl -s -o /dev/null -w "%{http_code}" http://${{ secrets.EC2_HOST }}:${{ secrets.API_PORT }}/health || echo "Error")
-          
-          if [ "$HEALTH_CHECK" = "200" ]; then
-            echo "✅ Despliegue completado exitosamente"
-          else
-            echo "❌ Error en el despliegue: $HEALTH_CHECK"
-            exit 1
-          fi
+        # SSH command to update repo and reload PM2
+        ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "cd ${{ secrets.EC2_REPO_PATH }} && \
+          git fetch && \
+          git checkout dev-org && \
+          git pull origin dev-org && \
+          npm install && \
+          pm2 reload ecosystem.config.js"
