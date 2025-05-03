@@ -1,101 +1,69 @@
-import { Request, Response } from "express";
-import { uploadImage, getImages, downloadImage, getImage} from "../../core/services/file.service";
-import path from 'path';
+// src/api/controllers/FileController.ts
+import { Request, Response } from 'express';
+import { FileService } from '../../core/domain/interfaces/services/FileService';
+import { catchAsync } from '../middleware/error.middleware';
+import { AppError } from '../../core/domain/errors/AppError';
 
-const   uploadFileController = async (req: Request, res: Response) => {
-    try {
-        const files = req.file;
-        const userId = req.params.id;
-        const folder = req.query.folder as string;
+export class FileController {
+    constructor(private fileService: FileService) {}
 
-        const image = await uploadImage(files, folder, Number(userId));
-
-        res.status(200).send({message: 'File uploaded successfully', image});
-
-    } catch (error) {
-        res.sendStatus(500).send({message: 'File not uploaded', error});
-    }
-}
-
-const uploadFilesController = async(req: Request, res: Response) => {
-    try {
-        const files = req.file;
-        const folder = req.query.folder as string || 'default-folder';
-        const userId = req.params.id;
-
-        const object = Array.isArray(files) ? files.map(async file => 
-            await uploadImage(file, folder, Number(userId))) : [await uploadImage(files, folder, Number(userId))];
-        
-        console.log(object)
-
-        res.status(200).send({message: 'Files uploaded successfully'});
-    } catch (error) {
-        res.sendStatus(500).send({message: 'Files not uploaded', error});
-    }
-}
-
-
-const getFilesController = async (req: Request, res: Response) => {
-    try {
-        const folder = req.query.folder as string || 'default-folder';
-
-        const images = await getImages(folder);
-        
-        res.status(200).send({message: 'Files retrieved successfully', images});
-    } catch (error) {
-        res.sendStatus(500).send({message: 'Files not retrieved', error});
-    }
-}
-
-const getFileController = async (req: Request, res: Response) => {
-    try {
-        const folder = req.query.folder?.toString() as string;
-        let name = req.query.name?.toString() as string;
-        const userId = req.params.id as string;
-
-
-        const image =  await getImage(folder,userId, name);
-
-        if(!image) {
-            res.status(404).send({message: 'File not found'});
-            return;
+    uploadFile = catchAsync(async (req: Request, res: Response): Promise<void> => {
+        if (!req.file) {
+            throw new AppError('No file uploaded', 400);
         }
-        res.status(200).send({image});
-    } catch (error) {
-        console.error(error);
-        res.status(500).send({ message: 'File not retrieved', errorMessage: error });
-    }
-}
 
-const downloadFileController = async (req: Request, res: Response) => {
-    const folder = req.query.folder as string;
-    let name = req.query.name as string;
-    const userId = req.params.id;
+        const userId = parseInt(req.params.id);
+        const folder = req.query.folder as string || 'default';
 
-     try {
-        name = name + '.jpg';
+        const fileUrl = await this.fileService.uploadFile(req.file, userId, folder);
         
-        await downloadImage(folder, userId, name);
-
-        const imagePath = path.join(__dirname, '..', 'images', userId, name);
-        console.log(imagePath)
-
-        res.status(200).sendFile(imagePath, (err) => {
-            if (err) {
-                res.status(500).send({ message: 'Error al descargar el archivo', error: err });
+        res.status(200).json({
+            success: true,
+            data: {
+                url: fileUrl,
+                fileName: req.file.originalname
             }
         });
+    });
 
-     } catch (error) {
-        res.sendStatus(500).send({message: 'File not downloaded', error});
-     }
-    
+    getFileUrl = catchAsync(async (req: Request, res: Response): Promise<void> => {
+        const userId = parseInt(req.params.id);
+        const fileName = req.query.name as string;
+        const folder = req.query.folder as string || 'default';
+
+        if (!fileName) {
+            throw new AppError('File name is required', 400);
+        }
+
+        const fileUrl = await this.fileService.getFileUrl(userId, fileName, folder);
+        
+        res.status(200).json({
+            success: true,
+            data: {
+                url: fileUrl,
+                fileName
+            }
+        });
+    });
+
+    deleteFile = catchAsync(async (req: Request, res: Response): Promise<void> => {
+        const userId = parseInt(req.params.id);
+        const fileName = req.query.name as string;
+        const folder = req.query.folder as string || 'default';
+
+        if (!fileName) {
+            throw new AppError('File name is required', 400);
+        }
+
+        const success = await this.fileService.deleteFile(userId, fileName, folder);
+        
+        if (success) {
+            res.status(200).json({
+                success: true,
+                message: 'File deleted successfully'
+            });
+        } else {
+            throw new AppError('Failed to delete file', 500);
+        }
+    });
 }
-
-export { 
-        uploadFileController, 
-        getFilesController, 
-        uploadFilesController, 
-        downloadFileController, 
-        getFileController,
-    };

@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
 import { User } from '../../../core/domain/entities/User';
 import { UserRepository } from '../../../core/domain/interfaces/repositories/UserRepository';
-import {undefined} from "zod";
+
 
 export class PostgresUserRepository implements UserRepository {
     constructor(private db: Pool) {}

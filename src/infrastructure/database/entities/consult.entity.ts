@@ -1,4 +1,3 @@
-// src/infrastructure/database/entities/consult.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
 import { AppointmentEntity } from "./appointment.entity";
 

@@ -1,44 +1,36 @@
-import {createStatus, getStatus, getStatuses} from "../../core/services/status.service";
-import { Request, Response } from "express";
-import {handleHttp} from "../../core/utils/error.handle";
+// src/api/controllers/StatusController.ts
+import { Request, Response } from 'express';
+import { StatusService } from '../../core/domain/interfaces/services/StatusService';
+import { catchAsync } from '../middleware/error.middleware';
+import { AppError } from '../../core/domain/errors/AppError';
 
-export const getStatusesController = async(req: Request, res: Response) => {
-    try {
-        const statuses = await  getStatuses();
-        if(statuses) {
-            res.status(200).send(statuses);
-        } else {
-            res.status(404).send(statuses);
-        }
-    } catch (error) {
-        handleHttp(res, "ERR_GET_STATUSES",error);
-    }
-}
+export class StatusController {
+    constructor(private statusService: StatusService) {}
 
-export const getStatusController = async(req: Request, res: Response) => {
-    try {
-        const status = await getStatus(Number(req.params.id));
-        if(status) {
-            res.status(200).send(status);
-        } else {
-            res.status(404).send(status);
-        }
-    } catch (er) {
-        console.log(er);
-        handleHttp(res, "ERR_GET_STATUS");
-    }
-}
+    getStatuses = catchAsync(async (_req: Request, res: Response): Promise<void> => {
+        const statuses = await this.statusService.getAllStatuses();
+        res.status(200).json(statuses);
+    });
 
-export const createStatusController = async(req: Request, res: Response) => {
-    try {
-        const status = await createStatus(req.body.name);
-        console.log(status);
-        if(status) {
-            res.status(201).send();
-        } else {
-            res.status(400).send(status);
+    getStatusById = catchAsync(async (req: Request, res: Response): Promise<void> => {
+        const id = parseInt(req.params.id);
+        const status = await this.statusService.getStatusById(id);
+
+        if (!status) {
+            throw new AppError('Status not found', 404);
         }
-    } catch (error) {
-        handleHttp(res, "ERR_CREATE_STATUS",error);
-    }
+
+        res.status(200).json(status);
+    });
+
+    createStatus = catchAsync(async (req: Request, res: Response): Promise<void> => {
+        const { name } = req.body;
+        
+        if (!name) {
+            throw new AppError('Name is required', 400);
+        }
+
+        const status = await this.statusService.createStatus(name);
+        res.status(201).json(status);
+    });
 }

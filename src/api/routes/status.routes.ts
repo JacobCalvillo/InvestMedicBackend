@@ -1,17 +1,14 @@
 import { Router} from "express";
-import {
-    getStatusController,
-    getStatusesController,
-    createStatusController,
-} from "../controllers/status.controller";
+import { StatusController } from "../controllers/status.controller";
+import { RequestHandler } from 'express';
 
-const router = Router();
 
-//GET
-router.get("/status/:id", getStatusController);
-router.get("/status", getStatusesController);
+export function statusRoutes(statusController: StatusController, authenticate: RequestHandler) {
+    const router = Router();
 
-//POST
-router.post("/status", createStatusController);
+    router.get('/status', authenticate, statusController.getStatuses);
+    router.get('/status/:id', authenticate, statusController.getStatusById);
 
-export {router};
+    return router;
+
+}

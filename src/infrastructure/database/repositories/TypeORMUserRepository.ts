@@ -1,11 +1,10 @@
-// src/infrastructure/database/repositories/TypeOrmUserRepository.ts
 import { Repository } from "typeorm";
 import { AppDataSource } from "../../../config/db/typeORM.config";
 import { UserEntity } from "../entities/user.entity";
 import { User } from "../../../core/domain/entities/User";
 import { UserRepository } from "../../../core/domain/interfaces/repositories/UserRepository";
 
-export class TypeOrmUserRepository implements UserRepository {
+export class TypeORMUserRepository implements UserRepository {
     private repository: Repository<UserEntity>;
 
     constructor() {

@@ -1,10 +1,40 @@
-import { getPaymentMethodsController } from "../controllers/paymentmethod.controller";
-import { Router} from "express";
+// src/api/routes/paymentMethod.routes.ts
+import { Router } from 'express';
+import { PaymentMethodController } from '../controllers/paymentmethod.controller';
+import { validatePaymentMethod } from '../validators/paymentMethod.validator';
+import { RequestHandler } from 'express';
 
-const router = Router();
+export function paymentMethodRoutes(paymentMethodController: PaymentMethodController, authenticate: RequestHandler): Router {
+    const router = Router();
 
-// GET
-router.get("/payment/methods", getPaymentMethodsController);
+    // Get all payment methods
+    router.get('/payment-methods', authenticate, paymentMethodController.getPaymentMethods);
 
+    // Get payment method by ID
+    router.get('/payment-methods/:id', authenticate, paymentMethodController.getPaymentMethodById);
 
-export { router };
+    // Create new payment method
+    router.post(
+        '/payment-methods',
+        authenticate,
+        validatePaymentMethod,
+        paymentMethodController.createPaymentMethod
+    );
+
+    // Update payment method
+    router.put(
+        '/payment-methods/:id',
+        authenticate,
+        validatePaymentMethod,
+        paymentMethodController.updatePaymentMethod
+    );
+
+    // Delete payment method
+    router.delete(
+        '/payment-methods/:id',
+        authenticate,
+        paymentMethodController.deletePaymentMethod
+    );
+
+    return router;
+}

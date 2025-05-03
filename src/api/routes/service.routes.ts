@@ -1,19 +1,47 @@
-import {
-    getServicesController,
-    getServiceByIdController,
-    createServiceController,
-    stripeSessionController
-} from '../controllers/service.controller';
+// src/api/routes/service.routes.ts
 import { Router } from 'express';
+import { ServiceController } from '../controllers/service.controller';
+import { validateService, validateCheckoutSession } from '../validators/service.validator';
+import { RequestHandler } from 'express';
 
-const router = Router();
+export function serviceRoutes(serviceController: ServiceController, authenticate: RequestHandler): Router {
+    const router = Router();
 
-//GET
-router.get('/services', getServicesController);
-router.get('/service/:id', getServiceByIdController)
+    // Get all services
+    router.get('/services', serviceController.getServices);
 
-//POST
-router.post('/services', createServiceController);
-router.post('/services/stripe', stripeSessionController);
+    // Get service by ID
+    router.get('/services/:id', serviceController.getServiceById);
 
-export { router };
+    // Create new service
+    router.post(
+        '/services',
+        authenticate,
+        validateService,
+        serviceController.createService
+    );
+
+    // Update service
+    router.put(
+        '/services/:id',
+        authenticate,
+        validateService,
+        serviceController.updateService
+    );
+
+    // Delete service
+    router.delete(
+        '/services/:id',
+        authenticate,
+        serviceController.deleteService
+    );
+
+    // Create checkout session
+    router.post(
+        '/services/stripe',
+        validateCheckoutSession,
+        serviceController.createCheckoutSession
+    );
+
+    return router;
+}
