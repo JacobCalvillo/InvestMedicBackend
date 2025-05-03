@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { uploadImage, getImages, downloadImage, getImage, getFileUrl, getSignedUrl } from "../../core/services/file.service";
-const path = require('path');
+import { uploadImage, getImages, downloadImage, getImage} from "../../core/services/file.service";
+import path from 'path';
 
 const   uploadFileController = async (req: Request, res: Response) => {
     try {
@@ -44,43 +44,6 @@ const getFilesController = async (req: Request, res: Response) => {
         res.status(200).send({message: 'Files retrieved successfully', images});
     } catch (error) {
         res.sendStatus(500).send({message: 'Files not retrieved', error});
-    }
-}
-
-const getSignedUrlController = async(req: Request, res: Response) => {
-    try {
-
-        const name = req.query.name as string;
-        const folder = req.query.folder as string;
-        const userId = req.params.id;
-        const expires = 60
-
-        const file = `${folder}/${userId}/${name}`
-
-        const url = await getSignedUrl(file, expires);
-
-        res.status(200).send({url});
-    } catch (error) {
-        res.status(500).send({ message: 'File not retrieved', errorMessage: error });
-    }
-}
-
-const getFileUrlController = async (req: Request, res: Response) => {
-    try {
-        const folder = req.query.folder?.toString() as string;
-        let name = req.query.name?.toString() as string;
-        const userId = req.params.id as string;
-
-        const image =  await getFileUrl(folder,userId, name);
-
-        if(!image) {
-            res.status(404).send({message: 'File not found'});
-            return;
-        }
-        res.status(200).send({image});
-    } catch (error) {
-        console.error(error);
-        res.status(500).send({ message: 'File not retrieved', errorMessage: error });
     }
 }
 
@@ -134,7 +97,5 @@ export {
         getFilesController, 
         uploadFilesController, 
         downloadFileController, 
-        getFileController, 
-        getFileUrlController, 
-        getSignedUrlController 
+        getFileController,
     };

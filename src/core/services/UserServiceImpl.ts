@@ -57,11 +57,7 @@ export class UserServiceImpl implements UserService {
     }
 
     async deleteUser(id: number): Promise<boolean> {
-        const user = this.userRepository.delete(id);
-        if (!user) {
-            return false
-        }
-        return true;
+        return this.userRepository.delete(id);
     }
 
     async authenticate(email: string, password: string): Promise<{ user: User, token: string } | null> {
