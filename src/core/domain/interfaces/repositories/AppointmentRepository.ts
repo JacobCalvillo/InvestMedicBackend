@@ -1,7 +1,7 @@
 import { Appointment } from '../../entities/Appointment';
 
 export interface AppointmentRepository {
-    findAll(): Promise<Appointment[]>;
+    findAll(): Promise<Appointment[] | null>;
     findById(id: number): Promise<Appointment | null>;
     findByPatientId(patientId: number): Promise<Appointment[]>;
     create(data: Appointment): Promise<Appointment>;

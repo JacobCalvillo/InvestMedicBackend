@@ -1,22 +1,37 @@
-import express from "express";
-import { 
-        uploadFileController, 
-        getFilesController, 
-        uploadFilesController, 
-        downloadFileController, 
-        getFileController
-    } from "../controllers/file.controller";
+// src/api/routes/file.routes.ts
+import { Router } from 'express';
+import { FileController } from '../controllers/file.controller';
+import { RequestHandler } from 'express';
+import multer from 'multer';
 
-const router = express.Router();
+// Configurar multer para almacenar los archivos en memoria
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
-router.post("/upload/file/:id", uploadFileController);
+export function fileRoutes(fileController: FileController, authenticate: RequestHandler): Router {
+    const router = Router();
 
-router.get("/files/:id", getFilesController);
-router.get("/file/:id", getFileController);
+    // Subir un archivo
+    router.post(
+        '/files/:id',
+        authenticate,
+        upload.single('file'),
+        fileController.uploadFile
+    );
 
-router.post('/files/:id', uploadFilesController);
+    // Obtener la URL de un archivo
+    router.get(
+        '/files/:id',
+        authenticate,
+        fileController.getFileUrl
+    );
 
-router.get('/download/file/:id', downloadFileController);
+    // Eliminar un archivo
+    router.delete(
+        '/files/:id',
+        authenticate,
+        fileController.deleteFile
+    );
 
-
-export { router }
+    return router;
+}

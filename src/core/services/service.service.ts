@@ -1,4 +1,4 @@
-import client from "../../config/db/connect.db";
+import {client} from "../../config/db/connect.db";
 import { Service } from '../../infrastructure/database/models/Service';
 import Stripe from 'stripe';
 import dotenv from 'dotenv';
