@@ -4,8 +4,11 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { setupRoutes } from './api';
 import { errorHandler } from './api/middleware/error.middleware';
+import { initializeDatabase } from "./config/db/typeORM.config";
 
-export function createApp(): express.Application {
+export async function createApp(): Promise<express.Application> {
+    await initializeDatabase();
+
     const app = express();
 
     // Middleware

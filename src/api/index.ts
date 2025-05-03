@@ -1,5 +1,6 @@
 import express from 'express';
 import { client } from '../config/db/connect.db';
+import { TypeOrmUserRepository} from "../infrastructure/database/repositories/TypeORMUserRepository";
 import { PostgresAppointmentRepository } from '../infrastructure/database/repositories/PostgresAppointmentRepository';
 import { AppointmentService } from '../core/services/appointment.service';
 import { AppointmentController } from './controllers/appointment.controller';
@@ -8,7 +9,6 @@ import { EmailNotificationService } from '../infrastructure/email/EmailNotificat
 import { JwtAuthService } from '../infrastructure/security/JwtAuthService';
 import { createAuthMiddleware } from './middleware/auth.middleware';
 import {PasswordHasher} from "../infrastructure/security/PasswordHasher";
-import {PostgresUserRepository} from "../infrastructure/database/repositories/PostgresUserRepository";
 import {UserServiceImpl} from "../core/services/UserServiceImpl";
 import {UserController} from "./controllers/user.controller";
 import {userRoutes} from "./routes/user.routes";
@@ -25,7 +25,7 @@ export function setupRoutes(app: express.Application): void {
 
     // Create repositories
     const appointmentRepository = new PostgresAppointmentRepository(dbPool);
-    const userRepository = new PostgresUserRepository(dbPool);
+    const userRepository = new TypeOrmUserRepository();
     const identificationTypesRepository = new PostgresIdentificationTypesRepository(dbPool);
 
     // servicios compartidos
