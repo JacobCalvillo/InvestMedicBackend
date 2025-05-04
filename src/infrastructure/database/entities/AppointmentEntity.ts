@@ -6,6 +6,7 @@ import { MedicalPractitionerEntity } from "./MedicalPractitionerEntity";
 import { ServiceEntity } from "./ServiceEntity";
 import { MedicalRecordEntity } from "./MedicalRecordEntity";
 import { PaymentEntity } from "./PaymentEntity";
+import { AppointmentStatus } from "../../../core/domain/enums/AppointmentStatus";
 
 @Entity({ name: "Appointment" })
 export class AppointmentEntity {
@@ -30,8 +31,13 @@ export class AppointmentEntity {
     @Column({ name: "end_time" })
     endTime!: Date;
     
-    @Column({ length: 30 })
-    status!: string; // 'scheduled', 'completed', 'cancelled', 'no_show', etc.
+   // Usamos el enum directamente como tipo
+   @Column({
+        name: "status_id",
+        type: "int",
+        default: AppointmentStatus.SCHEDULED
+    })
+    statusId!: AppointmentStatus; //scheduled', 'completed', 'cancelled', 'no_show', etc.
     
     @Column({ type: "text", nullable: true })
     reason?: string;
