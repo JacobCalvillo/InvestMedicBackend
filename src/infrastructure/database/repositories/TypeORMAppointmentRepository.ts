@@ -1,7 +1,7 @@
 
 import { Repository } from "typeorm";
 import { AppDataSource } from "../../../config/db/typeORM.config";
-import { AppointmentEntity } from "../entities/appointment.entity";
+import { AppointmentEntity } from "../entities/AppointmentEntity";
 import { Appointment } from "../../../core/domain/entities/Appointment";
 import { AppointmentRepository } from "../../../core/domain/interfaces/repositories/AppointmentRepository";
 

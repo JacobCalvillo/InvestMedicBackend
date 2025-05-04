@@ -1,7 +1,7 @@
 // src/infrastructure/database/repositories/TypeORMPatientRepository.ts
 import { Repository } from "typeorm";
 import { AppDataSource } from "../../../config/db/typeORM.config";
-import { PatientEntity } from "../entities/patient.entity";
+import { PatientEntity } from "../entities/PatientEntity";
 import { Patient } from "../../../core/domain/entities/Patient";
 import { PatientRepository } from "../../../core/domain/interfaces/repositories/PatientRepository";
 

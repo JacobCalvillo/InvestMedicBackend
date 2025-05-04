@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
 import { AppDataSource } from "../../../config/db/typeORM.config";
-import { UserEntity } from "../entities/user.entity";
+import { UserEntity } from "../entities/UserEntity";
 import { User } from "../../../core/domain/entities/User";
 import { UserRepository } from "../../../core/domain/interfaces/repositories/UserRepository";
 
