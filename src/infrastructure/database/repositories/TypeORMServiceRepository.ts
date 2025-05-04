@@ -1,7 +1,7 @@
 // src/infrastructure/database/repositories/TypeORMServiceRepository.ts
 import { Repository } from "typeorm";
 import { AppDataSource } from "../../../config/db/typeORM.config";
-import { ServiceEntity } from "../entities/service.entity";
+import { ServiceEntity } from "../entities/ServiceEntity";
 import { Service } from "../../../core/domain/entities/Service";
 import { ServiceRepository } from "../../../core/domain/interfaces/repositories/ServiceRepository";
 

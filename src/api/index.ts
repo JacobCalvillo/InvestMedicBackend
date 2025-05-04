@@ -1,16 +1,13 @@
 // src/api/index.ts
 import express from 'express';
-import { AppDataSource } from '../config/db/typeORM.config';
 import { TypeORMUserRepository } from "../infrastructure/database/repositories/TypeORMUserRepository";
 import { TypeORMAppointmentRepository } from '../infrastructure/database/repositories/TypeORMAppointmentRepository';
 import { TypeORMPatientRepository } from '../infrastructure/database/repositories/TypeORMPatientRepository';
 import { TypeORMServiceRepository } from '../infrastructure/database/repositories/TypeORMServiceRepository';
-import { TypeORMIdentificationTypesRepository } from '../infrastructure/database/repositories/TypeORMIdentificationTypesRepository';
 import { TypeORMPaymentMethodRepository } from '../infrastructure/database/repositories/TypeORMPaymentMethodRepository';
 import { TypeORMPaymentRepository } from '../infrastructure/database/repositories/TypeORMPaymentRepository';
 import { TypeORMStatusRepository } from '../infrastructure/database/repositories/TypeORMStatusRepository';
 import { TypeORMInvoiceRepository } from '../infrastructure/database/repositories/TypeORMInvoiceRepository';
-import { TypeORMMedicalPractitionerRepository } from '../infrastructure/database/repositories/TypeORMMedicalPractitionerRepository';
 
 import { AppointmentService } from '../core/services/appointment.service';
 import { AppointmentController } from './controllers/appointment.controller';
@@ -24,14 +21,7 @@ import { UserServiceImpl } from "../core/services/UserServiceImpl";
 import { UserController } from "./controllers/user.controller";
 import { userRoutes } from "./routes/user.routes";
 
-import { IdentificationTypesImpl } from "../core/services/IdentificationTypesImpl";
-import { IdentificationTypesController } from "./controllers/identificationTypes.controller";
-import { identificationTypesRoutes } from "./routes/identificationTypes.routes";
-
-import { MedicalPractitionerServiceImpl } from "../core/services/MedicalPractitionerServiceImpl";
 import { TypeORMMedicalPractitionerServiceRepository } from "../infrastructure/database/repositories/TypeORMMedicalPractitionerServiceRepository";
-import { MedicalPractitionerServiceController } from "./controllers/medicalpractitionerservice.controller";
-import { medicalPractitionerServiceRoutes } from './routes/medicalpractitionerservice.routes';
 
 // Importa el StripeService que usa el patrón Singleton
 import { StripeService } from "../infrastructure/payment/StripeService";
@@ -66,12 +56,10 @@ export function setupRoutes(app: express.Application): void {
     const appointmentRepository = new TypeORMAppointmentRepository();
     const patientRepository = new TypeORMPatientRepository();
     const serviceRepository = new TypeORMServiceRepository();
-    const identificationTypesRepository = new TypeORMIdentificationTypesRepository();
     const paymentMethodRepository = new TypeORMPaymentMethodRepository();
     const paymentRepository = new TypeORMPaymentRepository();
     const statusRepository = new TypeORMStatusRepository();
     const invoiceRepository = new TypeORMInvoiceRepository();
-    const medicalPractitionerRepository = new TypeORMMedicalPractitionerRepository();
 
     // Create shared services
     const passwordHasher = new PasswordHasher();
@@ -83,7 +71,6 @@ export function setupRoutes(app: express.Application): void {
     // Create business services
     const appointmentService = new AppointmentService(appointmentRepository, notificationService);
     const userService = new UserServiceImpl(userRepository, passwordHasher, authService);
-    const identificationTypesService = new IdentificationTypesImpl(identificationTypesRepository);
     const serviceService = new ServiceServiceImpl(serviceRepository, stripeService);
     const paymentMethodService = new PaymentMethodServiceImpl(paymentMethodRepository);
     const statusService = new StatusServiceImpl(statusRepository);
@@ -100,7 +87,6 @@ export function setupRoutes(app: express.Application): void {
     // Create controllers
     const appointmentController = new AppointmentController(appointmentService);
     const userController = new UserController(userService);
-    const identificationTypesController = new IdentificationTypesController(identificationTypesService);
     const serviceController = new ServiceController(serviceService);
     const paymentMethodController = new PaymentMethodController(paymentMethodService);
     const statusController = new StatusController(statusService);
@@ -111,22 +97,16 @@ export function setupRoutes(app: express.Application): void {
     //const webhookController = new WebhookController(stripeService);
 
     const medicalPractitionerServiceRepository = new TypeORMMedicalPractitionerServiceRepository();
-    const medicalPractitionerServiceService = new MedicalPractitionerServiceImpl(
-        medicalPractitionerServiceRepository,
-        medicalPractitionerRepository,
-        serviceRepository
-    );  
-    const medicalPractitionerServiceController = new MedicalPractitionerServiceController(medicalPractitionerServiceService);
+    
 
     // Register routes
     app.use('/api/v1', appointmentRoutes(appointmentController, authenticate));
     app.use('/api/v1', userRoutes(userController));
-    app.use('/api/v1', identificationTypesRoutes(identificationTypesController, authenticate));
     app.use('/api/v1', serviceRoutes(serviceController, authenticate));
     app.use('/api/v1', paymentMethodRoutes(paymentMethodController, authenticate));
     app.use('/api/v1', statusRoutes(statusController, authenticate));
     app.use('/api/v1', paymentRoutes(paymentController, authenticate));
     app.use('/api/v1', fileRoutes(fileController, authenticate));
-    app.use('/api/v1', medicalPractitionerServiceRoutes(medicalPractitionerServiceController, authenticate));
+
    // app.use('/api/v1', webhookRoutes(webhookController));
 }

@@ -1,7 +1,7 @@
 // src/infrastructure/database/repositories/TypeORMPaymentRepository.ts
 import { Repository } from "typeorm";
 import { AppDataSource } from "../../../config/db/typeORM.config";
-import { PaymentEntity } from "../entities/payment.entity";
+import { PaymentEntity } from "../entities/PaymentEntity";
 import { Payment } from "../../../core/domain/entities/Payment";
 import { PaymentRepository } from "../../../core/domain/interfaces/repositories/PaymentRepository";
 
